@@ -28,15 +28,18 @@ struct ContentView: View {
     var body: some View {
         List {
             Section {
+                SectionTitle(title: "Title")
                 TextField("Movie Title", text: $title)
             }
             Section {
+                SectionTitle(title: "Rating")
                 HStack {
                     Text(String(repeating: "*", count: Int(rating))).foregroundColor(.yellow).font(.title)
                 }
                 Slider(value: $rating, in: 1...5, step: 1)
             }
             Section {
+                SectionTitle(title: "Seen")
                 Toggle(isOn: $seen) {
                     if title == "" {
                         Text("I have seen this movie")
@@ -64,5 +67,12 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+    }
+}
+
+struct SectionTitle: View {
+    var title: String
+    var body: some View {
+Text(title).font(.caption).foregroundColor(.gray)
     }
 }
