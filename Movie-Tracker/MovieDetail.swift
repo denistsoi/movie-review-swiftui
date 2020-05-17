@@ -20,31 +20,30 @@ import SwiftUI
 //    Image(systemName: "play.fill").resizable().foregroundColor(.red)
 //        .aspectRatio(contentMode: .fit).frame(width: 100, height: 100)
 //}
-struct ContentView: View {
-    @State var title = ""
-    @State var rating = 3.0
-    @State var seen = false
+struct MovieDetail: View {
+    
+    @State var movie: Movie
     
     var body: some View {
         List {
             Section {
                 SectionTitle(title: "Title")
-                TextField("Movie Title", text: $title)
+                TextField("Movie Title", text: $movie.title)
             }
             Section {
                 SectionTitle(title: "Rating")
                 HStack {
-                    Text(String(repeating: "*", count: Int(rating))).foregroundColor(.yellow).font(.title)
+                    Text(String(repeating: "*", count: Int(movie.rating))).foregroundColor(.yellow).font(.title)
                 }
-                Slider(value: $rating, in: 1...5, step: 1)
+                Slider(value: $movie.rating, in: 1...5, step: 1)
             }
             Section {
                 SectionTitle(title: "Seen")
-                Toggle(isOn: $seen) {
-                    if title == "" {
+                Toggle(isOn: $movie.seen) {
+                    if movie.title == "" {
                         Text("I have seen this movie")
                     } else {
-                        Text("I have seen \(title)")
+                        Text("I have seen \(movie.title)")
                     }
                 }
             }
@@ -66,7 +65,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        MovieDetail(movie: Movie())
     }
 }
 
