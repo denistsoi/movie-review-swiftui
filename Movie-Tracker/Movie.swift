@@ -10,7 +10,7 @@ import Foundation
 
 struct Movie: Identifiable {
     var id = UUID()
-    var title = "Hi"
+    var title = "Movie"
     var rating = 3.0
     var seen = false
 }

@@ -11,11 +11,21 @@ import SwiftUI
 struct MovieList: View {
     var movies = [Movie(), Movie(), Movie()]
     var body: some View {
-        List(movies) {
-            movie in Text(movie.title)
+        NavigationView {
+            List(movies) {
+                currentMovie in
+                NavigationLink(destination: MovieDetail(movie: currentMovie)) {
+                    Text(currentMovie.title)
+                }
+            }.navigationBarTitle("Movies").navigationBarItems(trailing:
+                NavigationLink(destination: MovieDetail(movie: Movie())) {
+                    Text("Create")
+                }
+            )
         }
     }
 }
+
 
 struct MovieList_Previews: PreviewProvider {
     static var previews: some View {
