@@ -9,16 +9,17 @@
 import SwiftUI
 
 struct MovieList: View {
-    var movies = [Movie(), Movie(), Movie()]
+    @EnvironmentObject var movieStorage : MovieStorage
+    
     var body: some View {
         NavigationView {
-            List(movies) {
+            List(movieStorage.movies) {
                 currentMovie in
-                NavigationLink(destination: MovieDetail(movie: currentMovie)) {
+                NavigationLink(destination: MovieDetail(movie: currentMovie, newMovie: false)) {
                     Text(currentMovie.title)
                 }
             }.navigationBarTitle("Movies").navigationBarItems(trailing:
-                NavigationLink(destination: MovieDetail(movie: Movie())) {
+                NavigationLink(destination: MovieDetail(movie: Movie(), newMovie: true)) {
                     Text("Create")
                 }
             )

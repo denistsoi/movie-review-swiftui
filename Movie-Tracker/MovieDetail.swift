@@ -8,22 +8,14 @@
 
 import SwiftUI
 
-//        Button(action: {
-//            print("Hello")
-//        }) {
-//            Text("Button")
-//        }
-
-
-//ZStack {
-//    Image("code").resizable().aspectRatio(contentMode: .fit)
-//    Image(systemName: "play.fill").resizable().foregroundColor(.red)
-//        .aspectRatio(contentMode: .fit).frame(width: 100, height: 100)
-//}
 struct MovieDetail: View {
     
     @State var movie: Movie
     @Environment(\.presentationMode) var presentationMode
+    
+    let newMovie: Bool
+    
+    @EnvironmentObject var movieStorage:  MovieStorage
     
     var body: some View {
         List {
@@ -34,9 +26,9 @@ struct MovieDetail: View {
             Section {
                 SectionTitle(title: "Rating")
                 HStack {
-                    Text(String(repeating: "*", count: Int(movie.rating))).foregroundColor(.yellow).font(.title)
+                    Text(String(repeating: "*", count: Int(movie.rating))).foregroundColor(.yellow).font(.title).accessibility(label: Text("\(Int(movie.rating)) star rating"))
                 }
-                Slider(value: $movie.rating, in: 1...5, step: 1)
+                Slider(value: $movie.rating, in: 1...5, step: 1).accessibility(value: Text("\(Int(movie.rating))"))
             }
             Section {
                 SectionTitle(title: "Seen")
@@ -50,6 +42,17 @@ struct MovieDetail: View {
             }
             Section {
                 Button(action: {
+                    if self.newMovie {
+                        self.movieStorage.movies.append(self.movie)
+                    } else {
+                      
+                        for x in 0..<self.movieStorage.movies.count {
+                            
+                            if self.movieStorage.movies[x].id == self.movie.id {
+                                self.movieStorage.movies[x] = self.movie
+                            }
+                        }
+                    }
                     self.presentationMode.wrappedValue.dismiss()
                 }) {
                     HStack {
@@ -60,7 +63,7 @@ struct MovieDetail: View {
                 }
             }
         }.listStyle(GroupedListStyle())
-
+        
         
         
     }
@@ -68,13 +71,15 @@ struct MovieDetail: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        MovieDetail(movie: Movie())
+        MovieDetail(
+            movie: Movie(),
+            newMovie: true)
     }
 }
 
 struct SectionTitle: View {
     var title: String
     var body: some View {
-Text(title).font(.caption).foregroundColor(.gray)
+        Text(title).font(.caption).foregroundColor(.gray)
     }
 }
